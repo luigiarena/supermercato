@@ -4,12 +4,7 @@
     Autore: Arena Luigi
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-
+#include "supermercato.h"
 
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
@@ -37,7 +32,7 @@ int main(int argc, char* argv[]) {
 
 printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
     // Provo ad aprile il file di configurazione
-    if((config = fopen("../"config_name, "r")) == NULL) {
+    if((config = fopen(config_name, "r")) == NULL) {
         perror("Opening configuration file");
         exit(errno);
     }
