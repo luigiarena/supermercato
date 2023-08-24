@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if(cflag == 0) config_name = "../config.txt";
+    if(cflag == 0) config_name = "config.txt";
 
 printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
     // Provo ad aprile il file di configurazione
