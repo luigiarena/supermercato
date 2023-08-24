@@ -7,38 +7,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 
 
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
+    int opt, cflag = 0, vflag = 0;
     FILE *config;
     char* config_name;
 
     // Controllo gli argomenti
-    switch (argc) {
-        case 1:{
-            config_name = "../config.txt";
-            break;
-        }
-        case 3:{
-            if (strcmp(argv[1], "-c")==0 || strcmp(argv[1], "-C")==0) {
-                config_name = argv[2];
-                break;
-            }
-        }
-        default: {
-            fprintf(stderr, "Usage: %s [-c] [nomeFile]\n", argv[0]);
-            exit(errno);
-            break;
+    while ((opt = getopt(argc, argv, "c:vh")) != -1) {
+        switch (opt) {
+            case 'c':
+                cflag = 1; config_name = optarg; break;
+            case 'v':
+                vflag = 1; break;
+            case 'h':
+                fprintf(stderr, "Usage: %s [-c] [nomeFile]\n", argv[0]);
+                exit(errno); break;
+            default:
+                fprintf(stderr, "No valid argument\n");
+                exit(EXIT_FAILURE);
         }
     }
 
+    if(cflag == 0) config_name = "../config.txt";
+
+printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
     // Provo ad aprile il file di configurazione
-    if((config = fopen(config_name, "r")) == NULL) {
+    if((config = fopen("../"config_name, "r")) == NULL) {
         perror("Opening configuration file");
         exit(errno);
     }
-    
+
 
 }
