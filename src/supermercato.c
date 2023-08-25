@@ -9,7 +9,7 @@
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
     int opt, cflag = 0, vflag = 0;
-    FILE *config;
+    FILE *config_file;
     char* config_name;
 
     // Controllo gli argomenti
@@ -30,9 +30,11 @@ int main(int argc, char* argv[]) {
 
     if(cflag == 0) config_name = "config.txt";
 
-printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
+// TEST
+if(vflag==1) printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
+
     // Provo ad aprile il file di configurazione
-    if((config = fopen(config_name, "r")) == NULL) {
+    if((config_file = fopen(config_name, "r")) == NULL) {
         perror("Opening configuration file");
         exit(errno);
     }
