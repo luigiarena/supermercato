@@ -26,56 +26,6 @@ int val_check(int val, int min, int max) {
     if (val >= min && val <= max) return 0;
     else return 1; 
 }
-/*
-int param_check(param* config) {
-    if(config->K < 1 || config->K > 20) {
-        perror("This supermarket will not open. In config file 'K' has bad value");
-        CONFIG_VALUE();
-        return 1;    }
-    if(k > K || k < 1)
-        k = 1;
-    if(C < 2 || C > MAXC) {
-        perror("This supermarket will not open. In config file 'C' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(E >= C || E < 1) {
-        perror("This supermarket will not open. In config file 'E' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(T < MINT || T > MAXT) {
-        perror("This supermarket will not open. In config file 'T' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(P < 0 || P > MAXP) {
-        perror("This supermarket will not open. In config file 'P' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(S1 < MINS || S1 > K) {
-        perror("This supermarket will not open. In config file 'S1' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(S2 < MINS || S2 > C) {
-        perror("This supermarket will not open. In config file 'S2' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(Td < MINTD || Td > MAXTD) {
-        perror("This supermarket will not open. In config file 'Td' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    if(Tp < 1 || Tp > MAXTP) {
-        perror("This supermarket will not open. In config file 'Tp' has bad value");
-        CONFIG_VALUE();
-        return 1;
-    }
-    return 0;
-}*/
 
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
