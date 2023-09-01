@@ -121,8 +121,8 @@ int main(int argc, char* argv[]) {
         IFERROR((fd_c=accept(fd_skt, NULL, 0)),-1, "errore accept")
         // fai cose
         read(fd_c, buf, N);
-        printf("Server got: %s\n", buf);
-        write(fd_c, "Ciao Client", 12);
+        printf("Direttore(server) got: %s\n", buf);
+        write(fd_c, "Ciao Client!", 13);
         close(fd_skt);
         close(fd_c);
         cleanup();
@@ -146,7 +146,7 @@ int main(int argc, char* argv[]) {
         // fai cose
         write(fd_skt, "Ciao Server!",13);
         read(fd_skt,buf,N);
-        printf("Client got: %s\n",buf);
+        printf("Supermercato(client) got: %s\n",buf);
         close(fd_skt);
         exit(EXIT_SUCCESS);
     } else {
