@@ -27,11 +27,16 @@ int val_check(int val, int min, int max) {
     else return 1; 
 }
 
+void cleanup() {
+	unlink(SOCKNAME);
+}
+
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
     int opt, cflag = 0, vflag = 0;
     FILE *config_file;
     char* config_name;
+    int pid_d;
 
     // Controllo gli argomenti
     while ((opt = getopt(argc, argv, "c:vh")) != -1) {
@@ -95,5 +100,17 @@ int main(int argc, char* argv[]) {
     // Chiusura del file di configurazione
     IFERROR(fclose(config_file),-1,"Closing configuration file")
 
-    
+    // Faccio una fork del supermercato per creare il processo direttore
+    pid_d = fork();
+    if (pid==0) {
+        // Direttore
+        printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
+    } else if (pid>0) {
+        // Supermercato
+        printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
+    } else {
+        perror("Creando il fork del direttore");
+        exit(errno);
+    }
+
 }
