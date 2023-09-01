@@ -102,10 +102,10 @@ int main(int argc, char* argv[]) {
 
     // Faccio una fork del supermercato per creare il processo direttore
     pid_d = fork();
-    if (pid==0) {
+    if (pid_d==0) {
         // Direttore
         printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
-    } else if (pid>0) {
+    } else if (pid_d>0) {
         // Supermercato
         printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
     } else {
