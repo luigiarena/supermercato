@@ -55,10 +55,7 @@ int main(int argc, char* argv[]) {
     if(vflag==1) printf("nome file: %s\ncflag: %d\nvflag: %d\n", config_name, cflag, vflag);
 
     // Provo ad aprile il file di configurazione
-    if((config_file = fopen(config_name, "r")) == NULL) {
-        perror("Opening configuration file");
-        exit(errno);
-    }
+    IFERROR((config_file = fopen(config_name, "r")),NULL,"Opening configuration file")
 
     // Leggo i valori dei parametri e li salvo nella struttura param
     param* config = malloc(sizeof(param));
@@ -96,8 +93,7 @@ int main(int argc, char* argv[]) {
     printf("Test: param K ha val: %d\n", config->K);
 
     // Chiusura del file di configurazione
-    if(fclose(config_file) == -1) {
-        perror("Closing configuration file");
-        exit(errno);
-    }
+    IFERROR(fclose(config_file),-1,"Closing configuration file")
+
+    
 }
