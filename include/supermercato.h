@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 
 #define BUF_SIZE 128
 #define PATH_SIZE 128

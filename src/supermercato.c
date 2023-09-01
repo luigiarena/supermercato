@@ -105,9 +105,50 @@ int main(int argc, char* argv[]) {
     if (pid_d==0) {
         // Direttore
         printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
+        
+        int  fd_skt, fd_c; char buf[N];
+        struct sockaddr_un sa;
+        strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
+        sa.sun_family=AF_UNIX;
+
+        // passo 1: creo socket
+        IFERROR((fd_skt=socket(AF_UNIX, SOCK_STREAM, 0)),-1, "errore socket")
+        // passo 2: bind
+        IFERROR((bind(fd_skt,(struct sockaddr *)&sa, sizeof(sa))),-1, "errore bind")
+        // passo 3: listen
+        IFERROR((listen(fd_skt, SOMAXCONN)),-1, "errore listen")
+        // passo 4: accept
+        IFERROR((fd_c=accept(fd_skt, NULL, 0)),-1, "errore accept")
+        // fai cose
+        read(fd_c, buf, N);
+        printf("Server got: %s\n", buf);
+        write(fd_c, "Ciao Client", 12);
+        close(fd_skt);
+        close(fd_c);
+        cleanup();
+        exit(EXIT_SUCCESS);
     } else if (pid_d>0) {
         // Supermercato
         printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
+        
+        int fd_skt; char buf[N];
+        struct sockaddr_un sa;
+        strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
+        sa.sun_family=AF_UNIX;
+
+        // passo 1: creo socket
+        fd_skt=socket(AF_UNIX,SOCK_STREAM,0);
+        // passo 2: connect
+        while(connect(fd_skt,(struct sockaddr*)&sa, sizeof(sa)) == -1) {
+            if (errno == ENOENT) sleep(1);
+            else exit(EXIT_FAILURE);
+        }
+        // fai cose
+        write(fd_skt, "Ciao Server!",13);
+        read(fd_skt,buf,N);
+        printf("Client got: %s\n",buf);
+        close(fd_skt);
+        exit(EXIT_SUCCESS);
     } else {
         perror("Creando il fork del direttore");
         exit(errno);
