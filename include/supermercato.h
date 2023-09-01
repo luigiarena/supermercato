@@ -1,10 +1,23 @@
-#define BUF_SIZE 128
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+
+#define BUF_SIZE 128
+#define PATH_SIZE 128
+#define SOCKNAME "./unix_socket"
+#define N 100
+
+#define STDIN  0
+#define STDOUT 1
+#define STDERR 2
+
+#define IFERROR(s,m) if((s)==-1) {perror(m); exit(errno);}
+#define IFERROR3(s,m,c) if((s)==-1) {perror(m); c;}
+
+#define WRITE(m) IFERROR(write(STDOUT,m,strlen(m)), m);
+#define WRITELN(m) WRITE(m);WRITE("\n");
 
 /*  Struttura che contiene i parametri di configurazione    */
 typedef struct param {
