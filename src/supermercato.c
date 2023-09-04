@@ -124,6 +124,10 @@ int main(int argc, char* argv[]) {
         read(fd_c, buf, N);
         printf("Direttore(server) got: %s\n", buf);
         write(fd_c, "Ciao Client!", 13);
+    read(fd_c, buf, N);
+    printf("Direttore(server) got: %s\n", buf);
+    printf("Ottimo, iniziamo: SUPERMERCATO APERTO.\n\n");
+
         close(fd_skt);
         close(fd_c);
         cleanup();
@@ -145,11 +149,16 @@ int main(int argc, char* argv[]) {
             else exit(EXIT_FAILURE);
         }
         // fai cose
-        write(fd_skt, "Ciao Server!",13);
+        write(fd_skt, "Ciao Server!", 13);
         read(fd_skt,buf,N);
         printf("Supermercato(client) got: %s\n",buf);
+    printf("Sto preparando tutto...\n");
+    sleep(5);
+    printf("Ho quasi finito!\n");
+    write(fd_skt, "Eccomi sono pronto Server!", 27);
+
         close(fd_skt);
-        //exit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS);
     } else {
         perror("Creando il fork del direttore");
         exit(errno);
