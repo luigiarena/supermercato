@@ -107,19 +107,17 @@ int main(int argc, char* argv[]) {
         // Direttore
         printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
         
+        // connessione server
         int  fd_skt, fd_c; char buf[N];
         struct sockaddr_un sa;
         strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
         sa.sun_family=AF_UNIX;
 
-        // passo 1: creo socket
         IFERROR((fd_skt=socket(AF_UNIX, SOCK_STREAM, 0)),-1, "errore socket")
-        // passo 2: bind
         IFERROR((bind(fd_skt,(struct sockaddr *)&sa, sizeof(sa))),-1, "errore bind")
-        // passo 3: listen
         IFERROR((listen(fd_skt, SOMAXCONN)),-1, "errore listen")
-        // passo 4: accept
         IFERROR((fd_c=accept(fd_skt, NULL, 0)),-1, "errore accept")
+
         // fai cose
         read(fd_c, buf, N);
         printf("Direttore(server) got: %s\n", buf);
@@ -136,14 +134,13 @@ int main(int argc, char* argv[]) {
         // Supermercato
         printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
         
+        // connessione client
         int fd_skt; char buf[N];
         struct sockaddr_un sa;
         strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
         sa.sun_family=AF_UNIX;
 
-        // passo 1: creo socket
         fd_skt=socket(AF_UNIX,SOCK_STREAM,0);
-        // passo 2: connect
         while(connect(fd_skt,(struct sockaddr*)&sa, sizeof(sa)) == -1) {
             if (errno == ENOENT) sleep(1);
             else exit(EXIT_FAILURE);
@@ -153,7 +150,9 @@ int main(int argc, char* argv[]) {
         read(fd_skt,buf,N);
         printf("Supermercato(client) got: %s\n",buf);
     printf("Sto preparando tutto...\n");
+
     sleep(5);
+    
     printf("Ho quasi finito!\n");
     write(fd_skt, "Eccomi sono pronto Server!", 27);
 
