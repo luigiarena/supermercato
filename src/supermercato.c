@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
         read(fd_skt,buf,N);
         printf("Supermercato(client) got: %s\n",buf);
         close(fd_skt);
-        exit(EXIT_SUCCESS);
+        //exit(EXIT_SUCCESS);
     } else {
         perror("Creando il fork del direttore");
         exit(errno);
