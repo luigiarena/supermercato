@@ -5,6 +5,7 @@
 */
 
 #include "supermercato.h"
+#include "direttore.h"
 
 //param* config = malloc(sizeof(param));
 
