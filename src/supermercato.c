@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     int opt, cflag = 0, vflag = 0;
     FILE *config_file;
     char* config_name;
-    int pid_d;
+    int pid_d; int status;
 
     // Controllo gli argomenti
     while ((opt = getopt(argc, argv, "c:vh")) != -1) {
@@ -89,6 +89,7 @@ int main(int argc, char* argv[]) {
             connessione_server();
             avvio_supermercato();
             chiudi_server();
+            sleep(3);
 
             exit(EXIT_SUCCESS);
         }
@@ -122,13 +123,14 @@ int main(int argc, char* argv[]) {
     printf("Supermercato(client) got: %s\n",buf);
 printf("Sto preparando tutto...\n");
 
-sleep(5);
+sleep(3);
 
 printf("Ho quasi finito!\n");
 write(fd_skt, "Eccomi sono pronto Server!", 27);
-
+read(fd_skt,buf,N);
     close(fd_skt);
 
-
+    printf("Aspetto chiusura del direttore\n");
+    wait(&status);
     exit(EXIT_SUCCESS);
 }

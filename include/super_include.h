@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/wait.h>
 
 #define BUF_SIZE 128
 #define PATH_SIZE 128
