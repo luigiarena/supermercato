@@ -9,29 +9,6 @@
 
 //param* config = malloc(sizeof(param));
 
-void remove_spaces(char buffer[]) {
-    int i=0, j=1;
-    while (buffer[i] != '\0' && i < BUF_SIZE-1 && j < BUF_SIZE-1) {
-        //printf("-iter i: %d\n", i);
-        if (buffer[i] == ' ') {
-            while (buffer[j] == ' ' && buffer[j] != '\0' && j < BUF_SIZE) j++; 
-            buffer[i] = buffer[j];
-            buffer[j] = ' ';         
-        }
-        if (buffer[i] == '\0') return;
-        i++; j++;
-    }
-}
-
-int val_check(int val, int min, int max) {
-    if (val >= min && val <= max) return 0;
-    else return 1; 
-}
-
-void cleanup() {
-	unlink(SOCKNAME);
-}
-
 //  Funzione main del progetto
 int main(int argc, char* argv[]) {
     int opt, cflag = 0, vflag = 0;
@@ -94,7 +71,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    //TEST
+    // TEST
     printf("\n");
     printf("Test: param K ha val: %d\n", config->K);
 
@@ -103,64 +80,59 @@ int main(int argc, char* argv[]) {
 
     // Faccio una fork del supermercato per creare il processo direttore
     pid_d = fork();
-    if (pid_d==0) {
-        // Direttore
-        printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
-        
-        // connessione server
-        int  fd_skt, fd_c; char buf[N];
-        struct sockaddr_un sa;
-        strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
-        sa.sun_family=AF_UNIX;
+    switch (pid_d) {
+        case 0: {
+            // Direttore
+            printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
+            
+            // connessione server
+            connessione_server();
+            avvio_supermercato();
+            chiudi_server();
 
-        IFERROR((fd_skt=socket(AF_UNIX, SOCK_STREAM, 0)),-1, "errore socket")
-        IFERROR((bind(fd_skt,(struct sockaddr *)&sa, sizeof(sa))),-1, "errore bind")
-        IFERROR((listen(fd_skt, SOMAXCONN)),-1, "errore listen")
-        IFERROR((fd_c=accept(fd_skt, NULL, 0)),-1, "errore accept")
-
-        // fai cose
-        read(fd_c, buf, N);
-        printf("Direttore(server) got: %s\n", buf);
-        write(fd_c, "Ciao Client!", 13);
-    read(fd_c, buf, N);
-    printf("Direttore(server) got: %s\n", buf);
-    printf("Ottimo, iniziamo: SUPERMERCATO APERTO.\n\n");
-
-        close(fd_skt);
-        close(fd_c);
-        cleanup();
-        exit(EXIT_SUCCESS);
-    } else if (pid_d>0) {
-        // Supermercato
-        printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
-        
-        // connessione client
-        int fd_skt; char buf[N];
-        struct sockaddr_un sa;
-        strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
-        sa.sun_family=AF_UNIX;
-
-        fd_skt=socket(AF_UNIX,SOCK_STREAM,0);
-        while(connect(fd_skt,(struct sockaddr*)&sa, sizeof(sa)) == -1) {
-            if (errno == ENOENT) sleep(1);
-            else exit(EXIT_FAILURE);
+            exit(EXIT_SUCCESS);
         }
-        // fai cose
-        write(fd_skt, "Ciao Server!", 13);
-        read(fd_skt,buf,N);
-        printf("Supermercato(client) got: %s\n",buf);
-    printf("Sto preparando tutto...\n");
-
-    sleep(5);
-    
-    printf("Ho quasi finito!\n");
-    write(fd_skt, "Eccomi sono pronto Server!", 27);
-
-        close(fd_skt);
-        exit(EXIT_SUCCESS);
-    } else {
-        perror("Creando il fork del direttore");
-        exit(errno);
+        case -1: {
+            perror("Creando il fork del direttore");
+            exit(errno);
+        }
+        default: {
+            // Supermercato
+            printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
+            break;
+        }
     }
+    
+    // connessione client
+    int fd_skt; char buf[N];
+    struct sockaddr_un sa;
 
+    strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
+    sa.sun_family=AF_UNIX;
+
+    fd_skt=socket(AF_UNIX,SOCK_STREAM,0);
+    while(connect(fd_skt,(struct sockaddr*)&sa, sizeof(sa)) == -1) {
+        if (errno == ENOENT) sleep(1);
+        else exit(EXIT_FAILURE);
+    }
+    
+
+
+    //connessione_client();
+
+    // fai cose
+    write(fd_skt, "Ciao Server!", 13);
+    read(fd_skt,buf,N);
+    printf("Supermercato(client) got: %s\n",buf);
+printf("Sto preparando tutto...\n");
+
+sleep(5);
+
+printf("Ho quasi finito!\n");
+write(fd_skt, "Eccomi sono pronto Server!", 27);
+
+    close(fd_skt);
+
+
+    exit(EXIT_SUCCESS);
 }
