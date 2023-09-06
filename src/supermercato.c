@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     // connessione client
     int fd_skt; char buf[N];
     struct sockaddr_un sa;
-
+    
     strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
     sa.sun_family=AF_UNIX;
 
@@ -115,10 +115,6 @@ int main(int argc, char* argv[]) {
         if (errno == ENOENT) sleep(1);
         else exit(EXIT_FAILURE);
     }
-    
-
-
-    //connessione_client();
 
     // fai cose
     write(fd_skt, "Ciao Server!", 13);

@@ -37,15 +37,3 @@ int val_check(int val, int min, int max) {
 void cleanup() {
 	unlink(SOCKNAME);
 }
-/*
-void connessione_client() {
-    strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
-    sa.sun_family=AF_UNIX;
-
-    fd_skt=socket(AF_UNIX,SOCK_STREAM,0);
-    while(connect(fd_skt,(struct sockaddr*)&sa, sizeof(sa)) == -1) {
-        if (errno == ENOENT) sleep(1);
-        else exit(EXIT_FAILURE);
-    }
-}
-*/
