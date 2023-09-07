@@ -16,6 +16,13 @@ int main(int argc, char* argv[]) {
     char* config_name;
     int pid_d; int status;
 
+    // cancello il file socket se esiste
+    remove(SOCKNAME);
+
+        signal(SIGHUP, sighup);
+        signal(SIGINT, sigint);
+        signal(SIGQUIT, sigquit);
+
     // Controllo gli argomenti
     while ((opt = getopt(argc, argv, "c:vh")) != -1) {
         switch (opt) {
@@ -85,6 +92,10 @@ int main(int argc, char* argv[]) {
             // Direttore
             printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
             
+            signal(SIGHUP, sighup_c);
+            signal(SIGINT, sigint_c);
+            signal(SIGQUIT, sigquit_c);
+
             // connessione server
             connessione_server();
             avvio_supermercato();

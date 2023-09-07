@@ -37,3 +37,25 @@ int val_check(int val, int min, int max) {
 void cleanup() {
 	unlink(SOCKNAME);
 }
+
+void sighup()
+ 
+{
+    signal(SIGHUP, sighup); /* reset signal */
+    printf("DAD: I have received a SIGHUP\n");
+}
+ 
+// sigint() function definition
+void sigint()
+ 
+{
+    signal(SIGINT, sigint); /* reset signal */
+    printf("DAD: I have received a SIGINT\n");
+}
+ 
+// sigquit() function definition
+void sigquit()
+{
+    printf("My DADDY has Killed me!!!\n");
+    exit(0);
+}

@@ -26,3 +26,25 @@ void chiudi_server() {
     close(fd_c);
     unlink(SOCKNAME);
 }
+
+void sighup_c()
+ 
+{
+    signal(SIGHUP, sighup_c); /* reset signal */
+    printf("CHILD: I have received a SIGHUP\n");
+}
+ 
+// sigint() function definition
+void sigint_c()
+ 
+{
+    signal(SIGINT, sigint_c); /* reset signal */
+    printf("CHILD: I have received a SIGINT\n");
+}
+ 
+// sigquit() function definition
+void sigquit_c()
+{
+    printf("My DADDY has Killed me!!!\n");
+    exit(0);
+}
