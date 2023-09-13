@@ -45,16 +45,16 @@ void sighup()
     printf("DAD: I have received a SIGHUP\n");
 }
  
-// sigint() function definition
-void sigint()
+// sigquit() function definition
+void sigquit()
  
 {
     signal(SIGINT, sigint); /* reset signal */
     printf("DAD: I have received a SIGINT\n");
 }
  
-// sigquit() function definition
-void sigquit()
+// sigint() function definition
+void sigint()
 {
     printf("My DADDY has Killed me!!!\n");
     exit(0);

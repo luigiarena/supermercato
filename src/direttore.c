@@ -31,19 +31,19 @@ void sighup_c()
  
 {
     signal(SIGHUP, sighup_c); /* reset signal */
-    printf("CHILD: I have received a SIGHUP\n");
-}
- 
-// sigint() function definition
-void sigint_c()
- 
-{
-    signal(SIGINT, sigint_c); /* reset signal */
-    printf("CHILD: I have received a SIGINT\n");
+    printf("Il direttore ha caatturato un segnale SIGHUP\n");
 }
  
 // sigquit() function definition
 void sigquit_c()
+ 
+{
+    signal(SIGINT, sigint_c); /* reset signal */
+    printf("Il direttore ha caatturato un segnale SIGINT\n");
+}
+ 
+// sigint() function definition
+void sigint_c()
 {
     printf("My DADDY has Killed me!!!\n");
     exit(0);

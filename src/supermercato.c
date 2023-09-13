@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
     remove(SOCKNAME);
 
         signal(SIGHUP, sighup);
-        signal(SIGINT, sigint);
         signal(SIGQUIT, sigquit);
+        signal(SIGINT, sigint);
 
     // Controllo gli argomenti
     while ((opt = getopt(argc, argv, "c:vh")) != -1) {
@@ -93,8 +93,8 @@ int main(int argc, char* argv[]) {
             printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
             
             signal(SIGHUP, sighup_c);
-            signal(SIGINT, sigint_c);
             signal(SIGQUIT, sigquit_c);
+            signal(SIGINT, sigint_c);
 
             // connessione server
             connessione_server();
