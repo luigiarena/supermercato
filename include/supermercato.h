@@ -1,6 +1,6 @@
 #include "utils.h"
 
-/*  Struttura che contiene i parametri di configurazione    */
+/*  Struttura che contiene i parametri di configurazione    
 typedef struct param {
     int K;  // Numero max di casse aperte
     int Ki; // Numero di casse aperte inizialmente
@@ -14,6 +14,7 @@ typedef struct param {
     int S1; // Soglia per la chiusura delle casse
     int S2; // Soglia per l'apertura delle casse
 } param;
+*/
 
 void remove_spaces(char buffer[]) {
     int i=0, j=1;
@@ -38,24 +39,19 @@ void cleanup() {
 	unlink(SOCKNAME);
 }
 
-void sighup()
- 
-{
+void sighup() {
     signal(SIGHUP, sighup); /* reset signal */
-    printf("DAD: I have received a SIGHUP\n");
+    //printf("DAD: I have received a SIGHUP\n");
 }
  
 // sigquit() function definition
-void sigquit()
- 
-{
-    signal(SIGINT, sigint); /* reset signal */
-    printf("DAD: I have received a SIGINT\n");
+void sigquit() {
+    signal(SIGQUIT, sigquit); /* reset signal */
+    //printf("DAD: I have received a SIGQUIT\n");
 }
  
 // sigint() function definition
-void sigint()
-{
-    printf("My DADDY has Killed me!!!\n");
+void sigint() {
+    //printf("My DADDY has Killed me!!!\n");
     exit(0);
 }

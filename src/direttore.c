@@ -3,6 +3,9 @@
 int  fd_skt, fd_c; char buf[N];
 struct sockaddr_un sa;
 
+int signal_HUP = 0;
+int signal_QUIT = 0;
+
 void connessione_server() {
     strncpy(sa.sun_path, SOCKNAME, PATH_SIZE);
     sa.sun_family=AF_UNIX;
@@ -31,15 +34,17 @@ void sighup_c()
  
 {
     signal(SIGHUP, sighup_c); /* reset signal */
-    printf("Il direttore ha caatturato un segnale SIGHUP\n");
+    signal_HUP = 1;
+    printf("Il direttore ha catturato un segnale SIGHUP\n");
 }
  
 // sigquit() function definition
 void sigquit_c()
  
 {
-    signal(SIGINT, sigint_c); /* reset signal */
-    printf("Il direttore ha caatturato un segnale SIGINT\n");
+    signal(SIGQUIT, sigquit_c); /* reset signal */
+    signal_QUIT =1;
+    printf("  Il direttore ha catturato un segnale SIGQUIT\n");
 }
  
 // sigint() function definition
@@ -47,4 +52,15 @@ void sigint_c()
 {
     printf("My DADDY has Killed me!!!\n");
     exit(0);
+}
+
+void direttore_main(param *config) {
+    
+    while(!signal_QUIT) {
+        printf("Sono nel ciclo main del direttore\n");
+        sleep(1);
+    }
+    
+    printf("Test 1 di config->k: %d\n", config->K);
+
 }

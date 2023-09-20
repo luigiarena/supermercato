@@ -19,9 +19,12 @@ int main(int argc, char* argv[]) {
     // cancello il file socket se esiste
     remove(SOCKNAME);
 
-        signal(SIGHUP, sighup);
-        signal(SIGQUIT, sigquit);
-        signal(SIGINT, sigint);
+    // definisco i segnali da catture
+    int signal_HUP = 0;
+    int signal_QUIT = 0;
+    signal(SIGHUP, sighup);
+    signal(SIGQUIT, sigquit);
+    signal(SIGINT, sigint);
 
     // Controllo gli argomenti
     while ((opt = getopt(argc, argv, "c:vh")) != -1) {
@@ -90,8 +93,11 @@ int main(int argc, char* argv[]) {
     switch (pid_d) {
         case 0: {
             // Direttore
-            printf("Sono il direttore! PID: %d -PPID: %d\n", getpid(),getppid());
-            
+            printf("Sono il processo direttore, PID: %d -PPID: %d\n", getpid(),getppid());
+
+            // definisco i segnali da catturare
+            signal_HUP = 0;
+            signal_QUIT = 0;
             signal(SIGHUP, sighup_c);
             signal(SIGQUIT, sigquit_c);
             signal(SIGINT, sigint_c);
@@ -102,6 +108,8 @@ int main(int argc, char* argv[]) {
             chiudi_server();
             sleep(3);
 
+            direttore_main(config);
+
             exit(EXIT_SUCCESS);
         }
         case -1: {
@@ -110,7 +118,7 @@ int main(int argc, char* argv[]) {
         }
         default: {
             // Supermercato
-            printf("Sono il supermercato! PID: %d -PPID: %d\n", getpid(),getppid());
+            printf("Sono il processo supermercato, PID: %d -PPID: %d\n", getpid(),getppid());
             break;
         }
     }
@@ -142,6 +150,7 @@ read(fd_skt,buf,N);
     close(fd_skt);
 
     printf("Aspetto chiusura del direttore\n");
-    wait(&status);
+    waitpid(pid_d, &status, 0);
+    printf("IL SUPERMERCATO CHIUSO\n");
     exit(EXIT_SUCCESS);
 }
